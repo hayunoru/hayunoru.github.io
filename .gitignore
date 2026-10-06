@@ -1,0 +1,10 @@
+node_modules/
+
+# 平文の設定ファイルと、エディタのバックアップ類（絶対にコミットしない）
+*vault*.y*ml*
+!vault.example.yaml
+*.restored.yaml
+restored.yaml
+
+.DS_Store
+Thumbs.db

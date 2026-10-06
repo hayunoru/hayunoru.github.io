@@ -1,0 +1,210 @@
+# ============================================================
+#  非常口 — 設定ファイルの見本（ダミーデータ）
+#
+#  使い方:  npm run init   → vault.yaml ができる（git には入らない）
+#           vault.yaml を編集 → npm run build → docs/index.html
+#
+#  ・site: と kdf: は暗号化されない「公開」部分です（site: はロック画面に出る）。
+#    個人情報は書かないこと。
+#  ・sections: 以下はすべて暗号化されます。
+#  ・値はすべて文字列として読みます（先頭の 0 も消えません）。
+#    [ や { で始まる値、: を含む値は "..." で囲んでください。
+# ============================================================
+
+site:
+  title: 非常口
+  lock:
+    label: AUTHENTICATION
+    greeting: (｀・ω・´)ゞ 合言葉の入力を待機中
+    passphraseLabel: PASSPHRASE
+    button: 解除 ▸
+    showInput: 入力内容を表示
+  ui:
+    googleFonts: true           # false にすると外部への通信が完全になくなる（フォントは端末のもの）
+    # 章の背景の分け方（配置は変わらない。見た目だけ）
+    #   meaning … 中身で自動：TOTP のある章は点、伏せた値のある章は斜線、それ以外は無地
+    #   tone    … 章ごとに地の明るさを交互に
+    #   module  … 見出しを色帯に載せ、濃さを交互に
+    #   index   … 右上に大きな章番号と上端の目盛り
+    #   none    … 分けない
+    sectionStyle: meaning
+  theme:
+    accent: "#5fe3ff"
+    warn: "#ffc35a"
+  # labels: で画面の文言を変えられます（show / hide / copy / copied / hideAll / lock など）
+
+# 合言葉から鍵を作る重さ。上げるほど総当たりに強く、解除も遅くなる。
+# 変更は npm run rekey のときに反映されます。
+kdf:
+  memoryMiB: 64
+  iterations: 3
+
+# ------------------------------------------------------------
+#  章（セクション）
+#    id:        英小文字の識別子。本文から [](#id) でリンクできる（文字を空にすると章名になる）
+#    title:     見出し
+#    subtitle:  見出しの横の小さい補足（任意）
+#    size:      half（既定・横に 2 つ並ぶ）/ full（横いっぱい）
+#    tone:      accent（既定）/ warn（注意色）
+#    emphasis:  true で枠を強調
+#    blocks:    中身。下の種類を自由に組み合わせる
+#
+#  ブロックの種類
+#    - steps:  [文, ...]            番号付きの手順
+#    - list:   [文, ...]            箇条書き（見出し付きは type: list / title: / items:）
+#    - text:   文                   段落（改行可）
+#    - note:   文                   小さい補足
+#    - contacts: [{label, name, tel, note}]
+#    - totp:   [{name, account, secret}]   secret は base32。uri: otpauth://... でも可
+#              （digits / period / algorithm も指定可）
+#    - codes:  [{name, codes: [...], note}] バックアップコード（押した時だけ表示）
+#    - type: secret / name: / text: |      複数行の秘密（押した時だけ表示）
+#    - entries: [{name, sub, note, fields: [{label, value, secret, type, big}]}]
+#              secret: true で伏せる。type: tel / url / email でリンクになる。big: true で大きく
+#
+#  ・どのブロックも、好きな章にいくつでも置ける（TOTP を「個人」「仕事」の章に分けるなど）
+#  ・「type: totp」+「title: 小見出し」+「items:」の形で書くと、章の中に小見出し付きで並ぶ
+#      - type: totp
+#        title: 仕事用
+#        items:
+#          - { name: AWS, account: root, secret: ... }
+#
+#  文中の [文字](#id)・[文字](https://...)・[文字](tel:...) はリンクになります。
+# ------------------------------------------------------------
+sections:
+  - id: readme
+    title: README
+    blocks:
+      - steps:
+          - 端末を用意する。できれば家族や友人など、信頼できる人のもの
+          - "[](#pass) の password.txt でパスワードマネージャを開く"
+          - "Google に [](#codes) でログイン → 2段階認証を再設定"
+          - "[](#totp) のシードを新しい認証アプリに手入力で登録"
+          - "[](#device) の手順で、失くした端末のセッションと鍵を失効させる"
+          - "財布もなければ [](#money) の窓口でカードを止める"
+          - スマホ紛失なら、キャリアで SIM 再発行
+          - "火事や事故なら [](#insurance) の受付へ"
+          - 落ち着いたら、使ったコードの再発行と合言葉の変更。ここを作り直す
+      - note: (｀・ω・´)ゞ 落ち着いて、一つずつ。
+
+  - id: contact
+    title: CONTACT
+    blocks:
+      - contacts:
+          - { label: 母, name: 山田 花子, tel: 090-0000-0001, note: 実家の固定電話 03-0000-0000 }
+          - { label: 父, name: 山田 太郎, tel: 090-0000-0002 }
+          - { label: きょうだい, name: 山田 一郎, tel: 080-0000-0003 }
+          - { label: 友人, name: 佐藤 さくら, tel: 080-0000-0004, note: 合鍵を預けている }
+          - { label: 友人, name: 鈴木 健, tel: 070-0000-0005 }
+
+  - id: totp
+    title: TOTP
+    subtitle: シードは個別に表示
+    size: full
+    emphasis: true
+    blocks:
+      - totp:
+          - { name: GOOGLE, account: me@example.com, secret: JBSWY3DPEHPK3PXP }
+          - { name: GITHUB, account: your-id, secret: KRSXG5CTMVRXEZLU }
+          - { name: DISCORD, account: your-id, secret: GEZDGNBVGY3TQOJQ }
+          - { name: CONOHA, account: me@example.com, secret: MFRGGZDFMZTWQ2LK }
+          - uri: "otpauth://totp/Microsoft:me@example.com?secret=NBSWY3DPO5XXE3DE&issuer=MICROSOFT"
+
+  - id: codes
+    title: CODES
+    subtitle: 各コード1回限り
+    size: full
+    blocks:
+      - codes:
+          - name: GOOGLE
+            codes: ["3920 1847", "5521 0936", "1048 7723", "6602 3195", "8817 4402", "2290 6618", "7735 0281", "4163 9950", "9024 5537", "0386 2714"]
+          - name: GITHUB
+            codes: [a3f9c-07e21, 5b8d2-c4f10, e1027-9ab3d, 4c6ef-218a0, 93d01-be7c5, 0f4a8-6d293, d7b52-31ce8, 28e9f-a0b46, bc130-5f7d9, 61fa4-e892c, f0d37-4b16e, 7a2c8-d9035, 3e95b-17fa2, c8016-e43db, 59b7e-2c0a1, a4d20-8f6b3]
+          - name: DISCORD
+            codes: [k3vq9xpa, m8wz2rtn, p4hd7cye, t9bx1lfu, w2nj6sqe, a7fr3mzk, e5ty8vhd, h1cp4wqn, r6ug2bxs, z0ks9jem]
+
+  - id: pass
+    title: PASS
+    blocks:
+      - type: secret
+        name: password.txt
+        text: |
+          manager  : Bitwarden（例）
+          url      : https://vault.example.com
+          email    : me@example.com
+          master   : correct-horse-battery-staple
+          2fa      : TOTP の GOOGLE
+      - entries:
+          - name: CONOHA
+            fields:
+              - { label: ID, value: me@example.com }
+              - { label: PW, value: Xk29-pq7L-c0nO-88vR, secret: true }
+          - name: CARRIER
+            sub: キャリア名（例）
+            fields:
+              - { label: 回線, value: 090-0000-0000, type: tel }
+              - { label: ID, value: example-login }
+              - { label: PW, value: carrier-pass-0000, secret: true }
+              - { label: 暗証番号, value: "0000", secret: true }
+
+  - id: device
+    title: DEVICE
+    subtitle: 失くした端末の後始末
+    blocks:
+      - entries:
+          - { name: スマホ（例）, fields: [{ label: IMEI, value: "350000000000000" }], note: キャリア名 / 2025 年購入 }
+          - { name: ノートPC（例）, fields: [{ label: S/N, value: EXAMPLE0001 }] }
+      - text: "端末を探す: [Google デバイスを探す](https://www.google.com/android/find)"
+      - type: list
+        title: REVOKE
+        ordered: true
+        items:
+          - Google のデバイス一覧から、失くした端末をログアウト
+          - GitHub の SSH 鍵と Personal Access Token を失効
+          - Discord のログイン中の端末を削除
+          - サーバの authorized_keys から、失くした端末の鍵を削除
+
+  - id: money
+    title: MONEY
+    subtitle: 紛失・盗難の窓口
+    blocks:
+      - entries:
+          - name: クレジットカード（例）
+            sub: "**** 0000"
+            fields:
+              - { label: 紛失・盗難, value: 0120-000-000, type: tel, big: true }
+            note: 24 時間受付
+          - name: キャッシュカード（例）
+            sub: 〇〇銀行 本店 / 口座末尾 0000
+            fields:
+              - { label: 紛失・盗難, value: 0120-000-001, type: tel, big: true }
+
+  - id: id
+    title: ID
+    subtitle: 身分証
+    blocks:
+      - entries:
+          - { name: マイナンバーカード, fields: [{ label: 番号, value: "000000000000", secret: true }], note: 紛失時は一時停止の窓口へ }
+          - { name: 運転免許証, fields: [{ label: 番号, value: "000000000000", secret: true }] }
+          - { name: パスポート, fields: [{ label: 番号, value: TZ0000000, secret: true }, { label: 期限, value: 2030-01-01 }] }
+          - { name: 健康保険, fields: [{ label: 記号番号, value: "0000-0000", secret: true }] }
+
+  - id: insurance
+    title: INSURANCE
+    size: full
+    tone: warn
+    blocks:
+      - entries:
+          - name: 火災保険（例）
+            sub: 〇〇損保 / 証券 X000-000000
+            fields:
+              - { label: 事故受付, value: 0120-000-002, type: tel, big: true }
+            note: 片付ける前に写真を撮る。罹災証明書は市区町村で発行
+          - name: 医療保険（例）
+            sub: 〇〇生命 / 証券 0000000
+            fields:
+              - { label: 請求窓口, value: 0120-000-003, type: tel, big: true }
+          - name: 自動車保険（例）
+            sub: 〇〇損保 / 証券 X000-000001
+            fields:
+              - { label: 事故受付, value: 0120-000-004, type: tel, big: true }

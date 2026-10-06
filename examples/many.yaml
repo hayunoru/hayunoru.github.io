@@ -1,0 +1,225 @@
+# 見た目確認用：項目が多い場合（すべてダミー）
+site:
+  title: 非常口
+
+sections:
+  - id: readme
+    title: README
+    blocks:
+      - steps:
+          - 端末を用意する。できれば家族や友人など、信頼できる人のもの
+          - "[](#pass) の password.txt でパスワードマネージャを開く。ほとんどのパスワードはそこにある"
+          - "Google に [](#codes) のバックアップコードでログインし、2段階認証を再設定する"
+          - "[](#totp) のシードを新しい認証アプリに手入力で登録し直す。QR がなくても登録できる"
+          - "[](#device) の手順で、失くした端末のセッションと鍵を失効させる"
+          - "財布もなければ [](#money) の窓口でカードを止める"
+          - スマホ紛失なら、キャリアで SIM を再発行する。本人確認書類が要る
+          - "身分証を失くしたら [](#id) の番号を控えて再発行の手続きへ"
+          - "火事や事故なら [](#insurance) の受付へ。片付ける前に写真を撮る"
+          - "家族や友人には [](#contact) から連絡。無事だと伝える"
+          - 落ち着いたら、使ったコードの再発行と合言葉の変更
+          - このページを作り直す（npm run restore → 編集 → npm run build）
+      - text: |
+          借りた端末で合言葉を入力した場合は、落ち着いてから合言葉を変えて作り直すこと。
+      - note: (｀・ω・´)ゞ 落ち着いて、一つずつ。
+
+  - id: contact
+    title: CONTACT
+    blocks:
+      - contacts:
+          - { label: 母, name: 山田 花子, tel: 090-0000-0001, note: 実家の固定電話 03-0000-0000 }
+          - { label: 父, name: 山田 太郎, tel: 090-0000-0002 }
+          - { label: 兄, name: 山田 一郎, tel: 080-0000-0003, note: 平日昼は電話に出られない }
+          - { label: 姉, name: 田中 恵子, tel: 080-0000-0004 }
+          - { label: 祖母, name: 山田 ハナ, tel: 0120-000-005, note: 耳が遠いのでゆっくり }
+          - { label: 友人, name: 佐藤 さくら, tel: 080-0000-0006, note: 合鍵を預けている }
+          - { label: 友人, name: 鈴木 健, tel: 070-0000-0007 }
+          - { label: 友人, name: 高橋 翔, tel: 070-0000-0008, note: 近所。車を持っている }
+          - { label: 職場, name: 伊藤 部長, tel: 03-0000-0009, note: 緊急時のみ }
+          - { label: 大家, name: 〇〇不動産, tel: 03-0000-0010, note: 鍵の紛失・火事のとき }
+
+  # TOTP は好きな章に、いくつでも置ける。type: totp + title: で章の中の小見出しにもなる
+  - id: totp
+    title: TOTP
+    subtitle: 個人 / シードは個別に表示
+    size: full
+    emphasis: true
+    blocks:
+      - type: totp
+        title: ACCOUNT
+        items:
+          - { name: GOOGLE, account: me@example.com, secret: DZIU5VAYU36HPYRHG24FAD7TEZRIRPMF }
+          - { name: GOOGLE (SUB), account: sub.account.with.a.long.name@example.com, secret: KWRQ4NWQIP65HVWIQDCFSMMPU3JDQJ3Y }
+          - { name: MICROSOFT, account: me@example.com, secret: NMYXAIPQYZPU63SRXIU7MXIDFL7JW7WR }
+      - type: totp
+        title: SOCIAL
+        items:
+          - { name: DISCORD, account: your-id, secret: QZ2RB4725ZQUYZU3XXHAJUSEUWNZGL56 }
+      - type: totp
+        title: BANK
+        items:
+          - { name: ネット銀行（例）, account: "0000000", secret: 2X6GMQBZ7EB3H3J4Z4J6JOP7SULRFC6H, digits: 8, algorithm: SHA256 }
+
+  - id: infra
+    title: INFRA
+    subtitle: 開発・サーバ
+    size: full
+    blocks:
+      - totp:
+          - { name: GITHUB, account: your-id, secret: 4NEFT5J6L266SP4X4GCVANRB7VIAFGDR }
+          - { name: CONOHA, account: me@example.com, secret: CMIYMMVCMAMUBT6A4HVSZUHZ2VTADKKG }
+          - { name: AWS, account: root, secret: ZTZUJVGG3WFAJ5JAD75DCTTZVSHSC4YJ }
+          - { name: CLOUDFLARE, account: me@example.com, secret: ERRVJ62B4PJKCHVVQ54JJFAKCVCMM4P7 }
+          - { name: NPM, account: your-id, secret: MCUCLZ7MTVOFGFEYTZVDDS3HJYVJJQJH }
+      - note: AWS の root は普段使わない。復旧したら IAM ユーザーの MFA も見直す
+
+  - id: codes
+    title: CODES
+    subtitle: 各コード1回限り
+    size: full
+    blocks:
+      - codes:
+          - name: GOOGLE
+            codes: ["3920 1847", "5521 0936", "1048 7723", "6602 3195", "8817 4402", "2290 6618", "7735 0281", "4163 9950", "9024 5537", "0386 2714"]
+          - name: GITHUB
+            codes: [a3f9c-07e21, 5b8d2-c4f10, e1027-9ab3d, 4c6ef-218a0, 93d01-be7c5, 0f4a8-6d293, d7b52-31ce8, 28e9f-a0b46, bc130-5f7d9, 61fa4-e892c, f0d37-4b16e, 7a2c8-d9035, 3e95b-17fa2, c8016-e43db, 59b7e-2c0a1, a4d20-8f6b3]
+          - name: DISCORD
+            codes: [k3vq9xpa, m8wz2rtn, p4hd7cye, t9bx1lfu, w2nj6sqe, a7fr3mzk, e5ty8vhd, h1cp4wqn, r6ug2bxs, z0ks9jem]
+          - name: MICROSOFT
+            codes: [ABCD2-EFGH3-JKLM4-NPQR5-STUV6]
+            note: 回復コードは 1 つだけ。使ったらすぐ新しいものが発行される
+          - name: NPM
+            codes: [0a1b2c3d4e5f, 6a7b8c9d0e1f, 2a3b4c5d6e7f, 8a9b0c1d2e3f, 4a5b6c7d8e9f]
+
+  - id: pass
+    title: PASS
+    size: full
+    blocks:
+      - type: secret
+        name: password.txt
+        note: パスワードマネージャの復旧に必要なもの一式
+        text: |
+          manager   : Bitwarden（例）
+          url       : https://vault.example.com
+          email     : me@example.com
+          master    : correct-horse-battery-staple-orbit-lantern
+          2fa       : TOTP の GOOGLE
+          emergency : 緊急アクセスは佐藤さくら に設定済み
+          export    : 月 1 回、暗号化エクスポートを USB に保存
+          ---
+          recovery  : XXXX-XXXX-XXXX-XXXX-XXXX-XXXX
+          notes     : 保管庫を開いたら、まずメールのパスワードを変える
+      - entries:
+          - name: CONOHA
+            fields:
+              - { label: ID, value: me@example.com }
+              - { label: PW, value: Xk29-pq7L-c0nO-88vR, secret: true }
+              - { label: API, value: 0000aaaa1111bbbb2222cccc3333dddd, secret: true }
+          - name: CARRIER
+            sub: キャリア名（例）
+            fields:
+              - { label: 回線, value: 090-0000-0000, type: tel }
+              - { label: ID, value: example-login }
+              - { label: PW, value: carrier-pass-0000, secret: true }
+              - { label: 暗証番号, value: "0000", secret: true }
+          - name: GMAIL
+            fields:
+              - { label: ID, value: me@example.com }
+              - { label: PW, value: gm-Very-Long-Password-0000-Example, secret: true }
+          - name: 自宅 Wi-Fi
+            fields:
+              - { label: SSID, value: example-home-5g }
+              - { label: PW, value: wifi-pass-0000, secret: true }
+          - name: ルーター管理画面
+            fields:
+              - { label: URL, value: http://192.168.0.1, type: url }
+              - { label: PW, value: admin-0000, secret: true }
+          - name: プロバイダ
+            sub: 〇〇光（例）
+            fields:
+              - { label: 契約番号, value: COP0000000 }
+              - { label: サポート, value: 0120-000-010, type: tel }
+          - name: 証券口座
+            fields:
+              - { label: 口座番号, value: 000-0000000 }
+              - { label: PW, value: sec-pass-0000, secret: true }
+              - { label: 取引PW, value: trade-0000, secret: true }
+          - name: マンションのオートロック
+            fields:
+              - { label: 暗証番号, value: "0000", secret: true }
+            note: 管理会社に言えば開けてもらえる
+
+  - id: device
+    title: DEVICE
+    subtitle: 失くした端末の後始末
+    blocks:
+      - entries:
+          - { name: スマホ（例）, sub: 2025 年購入, fields: [{ label: IMEI, value: "350000000000000" }, { label: 電話番号, value: 090-0000-0000, type: tel }] }
+          - { name: ノートPC（例）, fields: [{ label: S/N, value: EXAMPLE0001 }] }
+          - { name: タブレット（例）, fields: [{ label: S/N, value: EXAMPLE0002 }] }
+          - { name: スマートウォッチ（例）, fields: [{ label: S/N, value: EXAMPLE0003 }] }
+      - text: "端末を探す: [Google デバイスを探す](https://www.google.com/android/find)"
+      - type: list
+        title: REVOKE
+        ordered: true
+        items:
+          - Google のデバイス一覧から、失くした端末をログアウト
+          - GitHub の SSH 鍵と Personal Access Token を失効
+          - Discord のログイン中の端末を削除
+          - サーバの authorized_keys から、失くした端末の鍵を削除
+          - ConoHa の API トークンを再発行
+          - npm のアクセストークンを失効
+          - GPG 鍵の失効証明書を公開（失効証明書は password.txt の場所に）
+          - パスワードマネージャのセッションを全て切断
+
+  - id: money
+    title: MONEY
+    subtitle: 紛失・盗難の窓口
+    blocks:
+      - entries:
+          - { name: クレジットカード A（例）, sub: "**** 0000", fields: [{ label: 紛失・盗難, value: 0120-000-000, type: tel, big: true }], note: 24 時間受付 }
+          - { name: クレジットカード B（例）, sub: "**** 1111", fields: [{ label: 紛失・盗難, value: 0120-000-011, type: tel, big: true }] }
+          - { name: キャッシュカード（例）, sub: 〇〇銀行 本店 / 口座末尾 0000, fields: [{ label: 紛失・盗難, value: 0120-000-001, type: tel, big: true }] }
+          - { name: ネット銀行（例）, sub: 口座末尾 1111, fields: [{ label: 紛失・盗難, value: 0120-000-012, type: tel, big: true }] }
+          - { name: 交通系 IC（例）, sub: 記名式, fields: [{ label: 再発行, value: 駅の窓口 }] }
+
+  - id: id
+    title: ID
+    subtitle: 身分証
+    blocks:
+      - entries:
+          - { name: マイナンバーカード, fields: [{ label: 番号, value: "000000000000", secret: true }], note: 紛失時は一時停止の窓口へ }
+          - { name: 運転免許証, fields: [{ label: 番号, value: "000000000000", secret: true }, { label: 期限, value: 2028-01-01 }] }
+          - { name: パスポート, fields: [{ label: 番号, value: TZ0000000, secret: true }, { label: 期限, value: 2030-01-01 }] }
+          - { name: 健康保険, fields: [{ label: 記号番号, value: "0000-0000", secret: true }, { label: 保険者, value: 〇〇健康保険組合 }] }
+          - { name: 年金, fields: [{ label: 基礎年金番号, value: "0000-000000", secret: true }] }
+
+  - id: insurance
+    title: INSURANCE
+    size: full
+    tone: warn
+    blocks:
+      - entries:
+          - name: 火災保険（例）
+            sub: 〇〇損保 / 証券 X000-000000
+            fields:
+              - { label: 事故受付, value: 0120-000-002, type: tel, big: true }
+              - { label: 代理店, value: 03-0000-0020, type: tel }
+            note: 片付ける前に写真を撮る。罹災証明書は市区町村で発行
+          - name: 医療保険（例）
+            sub: 〇〇生命 / 証券 0000000
+            fields:
+              - { label: 請求窓口, value: 0120-000-003, type: tel, big: true }
+          - name: 自動車保険（例）
+            sub: 〇〇損保 / 証券 X000-000001
+            fields:
+              - { label: 事故受付, value: 0120-000-004, type: tel, big: true }
+              - { label: ロードサービス, value: 0120-000-005, type: tel }
+          - name: 個人賠償責任保険（例）
+            sub: 火災保険の特約
+            fields:
+              - { label: 事故受付, value: 0120-000-002, type: tel, big: true }
+          - name: 家財保険（例）
+            sub: 〇〇少短 / 証券 0000-0000
+            fields:
+              - { label: 事故受付, value: 0120-000-006, type: tel, big: true }

@@ -1,0 +1,52 @@
+# 見た目確認用：項目が少ない場合（すべてダミー）
+site:
+  title: 非常口
+
+sections:
+  - id: readme
+    title: README
+    blocks:
+      - steps:
+          - "[](#pass) でパスワードマネージャを開く"
+          - "[](#totp) のシードを認証アプリに登録し直す"
+
+  - id: contact
+    title: CONTACT
+    blocks:
+      - contacts:
+          - { label: 母, name: 山田 花子, tel: 090-0000-0001 }
+
+  - id: totp
+    title: TOTP
+    size: full
+    emphasis: true
+    blocks:
+      - totp:
+          - { name: GOOGLE, account: me@example.com, secret: LD62QRMHZIJ7353NSAWTF2G32IOU3JKV }
+
+  - id: codes
+    title: CODES
+    blocks:
+      - codes:
+          - name: GOOGLE
+            codes: ["3920 1847", "5521 0936"]
+
+  - id: pass
+    title: PASS
+    blocks:
+      - entries:
+          - name: BITWARDEN
+            fields:
+              - { label: ID, value: me@example.com }
+              - { label: PW, value: correct-horse-battery-staple, secret: true }
+
+  - id: insurance
+    title: INSURANCE
+    size: full
+    tone: warn
+    blocks:
+      - entries:
+          - name: 火災保険（例）
+            sub: 〇〇損保 / 証券 X000-000000
+            fields:
+              - { label: 事故受付, value: 0120-000-002, type: tel, big: true }

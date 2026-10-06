@@ -1,0 +1,23 @@
+{
+  "name": "hijouguchi",
+  "version": "1.0.0",
+  "private": true,
+  "description": "全部の端末を失くした時のための、暗号化された単体 HTML の復旧ページ",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "prepare": "node scripts/install-hooks.mjs",
+    "init": "node scripts/init.mjs",
+    "build": "node scripts/build.mjs",
+    "rekey": "node scripts/build.mjs --rekey",
+    "restore": "node scripts/restore.mjs",
+    "demo": "node scripts/demo.mjs",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "hash-wasm": "^4.12.0",
+    "yaml": "^2.9.1"
+  }
+}

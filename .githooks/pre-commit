@@ -1,0 +1,10 @@
+#!/bin/sh
+# 平文の設定ファイル（とそのバックアップ類）がコミットされそうになったら止める
+bad=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '(^|/)[^/]*(vault[^/]*\.ya?ml|\.restored\.yaml|restored\.yaml)[^/]*$' | grep -v '^vault\.example\.yaml$')
+if [ -n "$bad" ]; then
+  echo "✖ 平文の設定ファイルがコミットに含まれています:" >&2
+  echo "$bad" | sed 's/^/    /' >&2
+  echo "  git restore --staged <file> で外してください。" >&2
+  exit 1
+fi
+exit 0
